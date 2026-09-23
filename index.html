@@ -6,32 +6,106 @@
     <title>Платформа обмена</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: var(--tg-theme-secondary-bg-color, #f4f5f7); color: var(--tg-theme-text-color, #172b4d); margin: 0; padding: 20px; }
-        .card { background-color: var(--tg-theme-bg-color, #ffffff); padding: 24px 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(9, 30, 66, 0.06); }
-        .header { text-align: center; margin-bottom: 24px; }
-        .header h1 { font-size: 20px; margin: 0 0 8px 0; font-weight: 600; }
-        .header p { font-size: 14px; margin: 0; color: var(--tg-theme-hint-color, #6b778c); }
-        .tabs { display: flex; background-color: var(--tg-theme-secondary-bg-color, #ebecf0); border-radius: 8px; padding: 4px; margin-bottom: 24px; }
-        .tab { flex: 1; text-align: center; padding: 10px; font-size: 15px; font-weight: 500; cursor: pointer; border-radius: 6px; color: var(--tg-theme-hint-color, #5e6c84); transition: all 0.2s ease; }
-        .tab.active { background-color: #0A2540; color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .form-group { margin-bottom: 16px; }
-        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--tg-theme-hint-color, #5e6c84); text-transform: uppercase; }
-        select, input { width: 100%; padding: 14px; border: 1px solid var(--tg-theme-hint-color, #dfe1e6); border-radius: 8px; font-size: 16px; box-sizing: border-box; background-color: var(--tg-theme-bg-color, #fafbfc); color: var(--tg-theme-text-color, #091e42); }
-        select:focus, input:focus { outline: none; border-color: #0A2540; }
-        .result-box { margin-top: 24px; padding: 16px; background-color: rgba(10, 37, 64, 0.05); border: 1px solid rgba(10, 37, 64, 0.1); border-radius: 8px; text-align: center; display: none; }
-        .result-box span { display: block; font-size: 13px; color: var(--tg-theme-hint-color, #5e6c84); margin-bottom: 4px; }
-        .result-box strong { font-size: 24px; color: #0A2540; }
-        @media (prefers-color-scheme: dark) {
-            .result-box { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); }
-            .result-box strong { color: #ffffff; }
+        :root {
+            /* Основные сине-бирюзовые цвета */
+            --primary-cyan: #06b6d4; 
+            --primary-blue: #0284c7;
+            --bg-gradient: linear-gradient(135deg, #ecfeff 0%, #e0f2fe 100%);
         }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+            background: var(--bg-gradient); 
+            color: #1e293b; 
+            margin: 0; 
+            padding: 20px; 
+            min-height: 100vh;
+        }
+        .card { 
+            background-color: #ffffff; 
+            padding: 26px 20px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(2, 132, 199, 0.08); 
+        }
+        .header { text-align: center; margin-bottom: 28px; }
+        .header h1 { 
+            font-size: 22px; 
+            margin: 0 0 6px 0; 
+            font-weight: 700; 
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header p { font-size: 14px; margin: 0; color: #64748b; }
+        
+        .tabs { 
+            display: flex; 
+            background-color: #f1f5f9; 
+            border-radius: 14px; 
+            padding: 5px; 
+            margin-bottom: 24px; 
+        }
+        .tab { 
+            flex: 1; 
+            text-align: center; 
+            padding: 12px; 
+            font-size: 15px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border-radius: 10px; 
+            color: #64748b; 
+            transition: all 0.3s ease; 
+        }
+        .tab.active { 
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue)); 
+            color: #ffffff; 
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3); 
+        }
+        
+        .form-group { margin-bottom: 18px; }
+        label { 
+            display: block; 
+            font-size: 12px; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            color: #475569; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+        select, input { 
+            width: 100%; 
+            padding: 15px; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 14px; 
+            font-size: 16px; 
+            box-sizing: border-box; 
+            background-color: #f8fafc; 
+            color: #0f172a;
+            transition: all 0.2s ease;
+        }
+        select:focus, input:focus { 
+            outline: none; 
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+        }
+        
+        .result-box { 
+            margin-top: 24px; 
+            padding: 18px; 
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 1px solid #bae6fd; 
+            border-radius: 14px; 
+            text-align: center; 
+            display: none; 
+        }
+        .result-box span { display: block; font-size: 13px; color: #0284c7; margin-bottom: 4px; font-weight: 600;}
+        .result-box strong { font-size: 26px; color: var(--primary-blue); }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="header">
-            <h1>Добро пожаловать</h1>
-            <p>Официальный сервис обмена валют</p>
+            <h1>Обмен Валют</h1>
+            <p>Быстро, безопасно, выгодно</p>
         </div>
 
         <div class="tabs">
@@ -62,8 +136,9 @@
         let tg = window.Telegram.WebApp;
         tg.expand();
         
+        // Цвет главной кнопки Telegram теперь бирюзовый
         tg.MainButton.text = "ОТПРАВИТЬ ЗАЯВКУ";
-        tg.MainButton.color = "#0A2540";
+        tg.MainButton.color = "#06b6d4";
         tg.MainButton.textColor = "#ffffff";
 
         let currentMode = 'buy';
